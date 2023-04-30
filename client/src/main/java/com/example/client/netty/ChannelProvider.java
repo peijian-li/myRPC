@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class ChannelProvider {
 
-    private static Map<String, Channel> channels = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(ChannelProvider.class);
+    private static Map<String, Channel> channels = new HashMap<>();
 
     public static Channel getChannel(Bootstrap bootstrap,InetSocketAddress inetSocketAddress) {
         String key=inetSocketAddress.toString();

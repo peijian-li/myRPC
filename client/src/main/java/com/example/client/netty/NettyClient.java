@@ -33,10 +33,10 @@ import java.util.concurrent.locks.LockSupport;
 public class NettyClient implements RpcClient {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
+    private static final Map<String,Thread> threadMap=new ConcurrentHashMap<>();
     private final ServiceDiscovery serviceDiscovery;
     private final CommonSerializer serializer;
-    private static Map<String,Thread> threadMap=new ConcurrentHashMap<>();
-    private Bootstrap bootstrap;
+    private final Bootstrap bootstrap;
 
     public NettyClient(Integer code, LoadBalancer loadBalancer) {
         this.serviceDiscovery = new NacosServiceDiscovery(loadBalancer);
