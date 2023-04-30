@@ -7,6 +7,7 @@ import com.example.server.annotation.Service;
 import com.example.server.annotation.ServiceScan;
 import com.example.server.provider.ServiceProvider;
 import com.example.server.registry.ServiceRegistry;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public abstract class AbstractRpcServer implements RpcServer {
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
     protected String host;
     protected int port;
     protected ServiceRegistry serviceRegistry;
@@ -27,11 +28,11 @@ public abstract class AbstractRpcServer implements RpcServer {
         try {
             startClass = Class.forName(startClassName);
             if(!startClass.isAnnotationPresent(ServiceScan.class)) {
-                logger.error("启动类缺少 @ServiceScan 注解");
+                log.error("启动类缺少 @ServiceScan 注解");
                 throw new RpcException(RpcError.SERVICE_SCAN_PACKAGE_NOT_FOUND);
             }
         } catch (ClassNotFoundException e) {
-            logger.error("出现未知错误");
+            log.error("出现未知错误");
             throw new RpcException(RpcError.UNKNOWN_ERROR);
         }
         String basePackage = startClass.getAnnotation(ServiceScan.class).value();
@@ -42,7 +43,7 @@ public abstract class AbstractRpcServer implements RpcServer {
         try {
             classList= ReflectUtil.getClasses(basePackage);
         } catch (ClassNotFoundException e) {
-            logger.error("找不到类的class文件");
+            log.error("找不到类的class文件");
         }
         for(Class<?> clazz : classList) {
             if(clazz.isAnnotationPresent(Service.class)) {
@@ -51,7 +52,7 @@ public abstract class AbstractRpcServer implements RpcServer {
                 try {
                     obj = clazz.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
-                    logger.error("创建 " + clazz + " 时有错误发生");
+                    log.error("创建 " + clazz + " 时有错误发生");
                     continue;
                 }
                 if("".equals(serviceName)) {

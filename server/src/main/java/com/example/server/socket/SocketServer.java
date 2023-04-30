@@ -30,16 +30,16 @@ public class SocketServer extends AbstractRpcServer {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket()) {
             serverSocket.bind(new InetSocketAddress(host, port));
-            logger.info("服务器启动……");
+            log.info("服务器启动……");
             ShutdownHook.addClearAllHook(host,port);
             Socket socket;
             while ((socket = serverSocket.accept()) != null) {
-                logger.info("消费者连接: {}:{}", socket.getInetAddress(), socket.getPort());
+                log.info("消费者连接: {}:{}", socket.getInetAddress(), socket.getPort());
                 threadPool.execute(new SocketRequestHandlerThread(socket, requestHandler));
             }
             threadPool.shutdown();
         } catch (IOException e) {
-            logger.error("服务器启动时有错误发生:", e);
+            log.error("服务器启动时有错误发生:", e);
         }
     }
 

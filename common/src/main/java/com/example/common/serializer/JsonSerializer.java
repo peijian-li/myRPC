@@ -5,14 +5,14 @@ import com.example.common.enumeration.SerializerCode;
 import com.example.common.exception.SerializeException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.io.IOException;
 
+@Slf4j
 public class JsonSerializer implements CommonSerializer {
 
-    private static final Logger logger = LoggerFactory.getLogger(JsonSerializer.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -20,7 +20,7 @@ public class JsonSerializer implements CommonSerializer {
         try {
             return objectMapper.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
-            logger.error("序列化时有错误发生:", e);
+            log.error("序列化时有错误发生:", e);
             throw new SerializeException("序列化时有错误发生");
         }
     }
@@ -34,7 +34,7 @@ public class JsonSerializer implements CommonSerializer {
             }
             return obj;
         } catch (IOException e) {
-            logger.error("序列化时有错误发生:", e);
+            log.error("序列化时有错误发生:", e);
             throw new SerializeException("序列化时有错误发生");
         }
     }

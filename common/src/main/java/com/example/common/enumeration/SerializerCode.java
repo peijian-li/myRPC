@@ -7,8 +7,9 @@ import lombok.Getter;
 @Getter
 public enum SerializerCode {
 
-    JSON(0);
+    JSON(0,"JSON序列化器");
 
     private final int code;
+    private final String description;
 
 }

@@ -3,17 +3,17 @@ package com.example.client.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class ChannelProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChannelProvider.class);
-    private static Map<String, Channel> channels = new HashMap<>();
+    private static final Map<String, Channel> channels = new HashMap<>();
 
     public static Channel getChannel(Bootstrap bootstrap,InetSocketAddress inetSocketAddress) {
         String key=inetSocketAddress.toString();
@@ -27,7 +27,7 @@ public class ChannelProvider {
             try {
                 channel=bootstrap.connect(inetSocketAddress).sync().channel();
             } catch (InterruptedException e) {
-                logger.error("连接客户端时有错误发生", e);
+                log.error("连接客户端时有错误发生", e);
                 channels.remove(key);
                 return null;
             }

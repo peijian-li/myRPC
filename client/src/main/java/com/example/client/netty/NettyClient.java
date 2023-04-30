@@ -11,7 +11,6 @@ import com.example.common.entity.RpcResponse;
 import com.example.common.enumeration.RpcError;
 import com.example.common.exception.RpcException;
 import com.example.common.serializer.CommonSerializer;
-import com.example.common.util.NacosUtil;
 import com.example.common.util.RpcMessageChecker;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -21,18 +20,17 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.LockSupport;
 
-
+@Slf4j
 public class NettyClient implements RpcClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
     private static final Map<String,Thread> threadMap=new ConcurrentHashMap<>();
     private final ServiceDiscovery serviceDiscovery;
     private final CommonSerializer serializer;
@@ -63,7 +61,7 @@ public class NettyClient implements RpcClient {
     @Override
     public Object sendRequest(RpcRequest rpcRequest) {
         if(serializer == null) {
-            logger.error("未设置序列化器");
+            log.error("未设置序列化器");
             throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
         }
         RpcResponse rpcResponse;

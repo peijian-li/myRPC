@@ -3,15 +3,15 @@ package com.example.server.socket;
 import com.example.common.entity.RpcRequest;
 import com.example.common.entity.RpcResponse;
 import com.example.server.handler.RequestHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.io.*;
 import java.net.Socket;
 
+@Slf4j
 public class SocketRequestHandlerThread implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(SocketRequestHandlerThread.class);
     private Socket socket;
     private RequestHandler requestHandler;
 
@@ -30,7 +30,7 @@ public class SocketRequestHandlerThread implements Runnable {
             objectOutputStream.writeObject(RpcResponse.success(result,rpcRequest.getRequestId()));
             objectOutputStream.flush();
         } catch (IOException | ClassNotFoundException e) {
-            logger.error("调用或发送时有错误发生：", e);
+            log.error("调用或发送时有错误发生：", e);
         }
     }
 

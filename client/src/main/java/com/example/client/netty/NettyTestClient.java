@@ -7,16 +7,14 @@ import com.example.client.loadbalancer.RandomLoadBalancer;
 import com.example.common.api.HelloService;
 import com.example.common.serializer.CommonSerializer;
 import com.example.common.util.ThreadPoolFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
+@Slf4j
 public class NettyTestClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
 
     public static void main(String[] args) {
         RpcClient client = new NettyClient(CommonSerializer.JSON_SERIALIZER,new RandomLoadBalancer());
@@ -34,7 +32,7 @@ public class NettyTestClient {
         try {
             threadPool.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            logger.error("线程执行中断");
+            log.error("线程执行中断");
         }
         ChannelProvider.closeChannel();
     }

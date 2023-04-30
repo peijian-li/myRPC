@@ -14,13 +14,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 
 public class NettyServer extends AbstractRpcServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
     private final CommonSerializer serializer;
 
     public NettyServer(String host, int port) {
@@ -61,7 +59,7 @@ public class NettyServer extends AbstractRpcServer {
             future.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
-            logger.error("启动服务器时有错误发生: ", e);
+            log.error("启动服务器时有错误发生: ", e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
