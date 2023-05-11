@@ -16,31 +16,25 @@ import java.util.Map;
 @Slf4j
 public class NacosServiceDiscovery implements ServiceDiscovery {
 
-    private Map<String,List<Instance>> instanceMap=new HashMap<>();
+    private final Map<String,List<Instance>> instanceMap=new HashMap<>();
     private final LoadBalancer loadBalancer;
 
     public NacosServiceDiscovery(LoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
         new Thread(()->{
-            try {
-                instanceMap.put("HelloService",NacosUtil.getAllInstance("HelloService"));
-                instanceMap.put("ByeService",NacosUtil.getAllInstance("ByeService"));
-            } catch (NacosException e) {
-                log.error("缓存服务时有错误发生:", e);
-            }finally {
-                while (true) {
-                    try {
-                        Thread.sleep(5000);
-                        instanceMap.put("HelloService", NacosUtil.getAllInstance("HelloService"));
-                        instanceMap.put("ByeService", NacosUtil.getAllInstance("ByeService"));
-                    } catch (InterruptedException e) {
-                        log.error("等待时有错误发生:", e);
-                    } catch (NacosException e) {
-                        log.error("缓存服务时有错误发生:", e);
-                        continue;
-                    }
-                }
-            }
+           while (true) {
+               try {
+                   instanceMap.put("HelloService", NacosUtil.getAllInstance("HelloService"));
+                   instanceMap.put("ByeService", NacosUtil.getAllInstance("ByeService"));
+               } catch (NacosException e) {
+                   log.error("获取服务实例发生错误:", e);
+               }
+               try {
+                   Thread.sleep(5000);
+               } catch (InterruptedException e) {
+                   log.error("等待时发生错误",e);
+               }
+           }
         }).start();
     }
 
