@@ -64,14 +64,13 @@ public class NettyClient implements RpcClient {
             log.error("未设置序列化器");
             throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
         }
-        RpcResponse rpcResponse;
         InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
         Channel channel=ChannelProvider.getChannel(bootstrap,inetSocketAddress);
         channel.writeAndFlush(rpcRequest);
         AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse" + rpcRequest.getRequestId());
         threadMap.put(rpcRequest.getRequestId(),Thread.currentThread());
         LockSupport.parkNanos(5*1000000000L);
-        rpcResponse = channel.attr(key).get();
+        RpcResponse rpcResponse = channel.attr(key).get();
         RpcMessageChecker.check(rpcRequest, rpcResponse);
         return rpcResponse.getData();
     }

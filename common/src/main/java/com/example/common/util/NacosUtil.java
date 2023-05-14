@@ -37,7 +37,6 @@ public class NacosUtil {
     public static void registerService(String serviceName, InetSocketAddress address) throws NacosException {
         namingService.registerInstance(serviceName, address.getHostName(), address.getPort());
         serviceNames.add(serviceName);
-
     }
 
     public static List<Instance> getAllInstance(String serviceName) throws NacosException {

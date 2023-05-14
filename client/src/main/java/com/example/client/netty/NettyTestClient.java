@@ -2,7 +2,7 @@ package com.example.client.netty;
 
 
 import com.example.client.RpcClient;
-import com.example.client.RpcClientProxy;
+import com.example.client.proxy.RpcClientProxy;
 import com.example.client.loadbalancer.RandomLoadBalancer;
 import com.example.common.api.HelloService;
 import com.example.common.serializer.CommonSerializer;

@@ -1,5 +1,6 @@
-package com.example.client;
+package com.example.client.proxy;
 
+import com.example.client.RpcClient;
 import com.example.common.entity.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
 

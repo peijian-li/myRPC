@@ -5,19 +5,16 @@ import com.example.common.exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class ServiceProviderImpl implements ServiceProvider {
 
-    private final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private final Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private static final Map<String, Object> serviceMap = new HashMap<>();
 
     @Override
     public <T> void addServiceProvider(T service, String serviceName) {
-        registeredService.add(serviceName);
         serviceMap.put(serviceName, service);
         log.info("向接口: {} 注册服务: {}", service.getClass().getInterfaces(), serviceName);
     }
